@@ -227,6 +227,10 @@ img {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.parcel-grid {
+  grid-template-columns: 1fr;
+}
+
 .field-grid-three {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -252,7 +256,7 @@ img {
 }
 
 .field-emphasis {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 input,
@@ -275,6 +279,20 @@ select {
     border-color 160ms ease,
     box-shadow 160ms ease,
     transform 160ms ease;
+}
+
+input[type="number"] {
+  padding: 0 2.2rem 0 12px;
+  font-weight: 600;
+  text-align: left;
+  -webkit-text-fill-color: var(--ink);
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  margin: 0;
 }
 
 input[type="text"]:focus,
@@ -506,6 +524,7 @@ select:focus {
 
   .field-grid-two,
   .field-grid-three,
+  .parcel-grid,
   .results-toolbar {
     grid-template-columns: 1fr;
   }
