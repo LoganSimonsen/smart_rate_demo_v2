@@ -40,13 +40,44 @@ if (!authKey) {
   console.warn("Missing EasyPost API key env var");
 }
 
+app.use("/shipments", (req, res, next) => {
+  if (!authKey) {
+    return res.status(500).json({
+      error:
+        "Missing EasyPost API key. Set EP_PRODUCTION_KEY or EP_TEST_KEY in the server environment.",
+    });
+  }
+  return next();
+});
+
 app.use(
   "/shipments",
   createProxyMiddleware({
     target: "https://api.easypost.com/v2",
     changeOrigin: true,
-    auth: authKey ? `${authKey}:` : undefined,
     logLevel: "info",
+    onProxyReq(proxyReq) {
+      proxyReq.setHeader(
+        "Authorization",
+        `Basic ${Buffer.from(`${authKey}:`).toString("base64")}`,
+      );
+    },
+    onProxyRes(proxyRes, req) {
+      if (proxyRes.statusCode && proxyRes.statusCode >= 400) {
+        console.error(
+          `EasyPost upstream error for ${req.method} ${req.originalUrl}: ${proxyRes.statusCode}`,
+        );
+      }
+    },
+    onError(err, req, res) {
+      console.error(`Proxy error for ${req.method} ${req.originalUrl}`, err);
+      if (!res.headersSent) {
+        res.status(502).json({
+          error: "Failed to reach EasyPost from the proxy server.",
+          detail: err.message,
+        });
+      }
+    },
   }),
 );
 

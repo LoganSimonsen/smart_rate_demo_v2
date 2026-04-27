@@ -450,7 +450,11 @@ function fetchRates(d) {
       //   console.log(r);
     })
     .catch(function (error) {
-      // handle error
+      const detail =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.message;
+      updateSummary(`Rate request failed: ${detail}`);
       console.log(error);
     })
     .then(function () {
