@@ -32,6 +32,32 @@ const formatter = new Intl.NumberFormat("en-US", {
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
+function formatPercentileLabel(key) {
+  return key.replace("percentile_", "") + "%";
+}
+
+function updateSummary(message) {
+  document.getElementById("result-summary").textContent = message;
+}
+
+function updateTransitTargetLabel(days) {
+  const count = Number(days) || 0;
+  document.getElementById("transit-target-label").textContent =
+    count === 1 ? "1 day" : `${count} days`;
+}
+
+function updatePercentileLabel(key) {
+  document.getElementById("active-percentile-label").textContent =
+    formatPercentileLabel(key);
+}
+
+function setStatusState(isOnline) {
+  const status = document.getElementById("status");
+  status.classList.toggle("is-online", isOnline);
+  status.classList.toggle("is-offline", !isOnline);
+  status.textContent = isOnline ? "Server online" : "Server offline";
+}
+
 function getState(zipString) {
   /* Ensure param is a string to prevent unpredictable parsing results */
   if (typeof zipString !== "string") {
@@ -254,14 +280,19 @@ function getRates(e) {
   document.getElementById("results").innerHTML = "";
   showSpinner();
   e.preventDefault();
+  const form = e.currentTarget;
   let data = {};
-  data.from_zip = e.target[0].value;
-  data.to_zip = e.target[1].value;
-  data.weight = e.target[2].value;
-  data.length = e.target[3].value || null;
-  data.width = e.target[4].value || null;
-  data.height = e.target[5].value || null;
-  tintDays = e.target[6].value || 2;
+  data.from_zip = form.querySelector("#origin-zip").value;
+  data.to_zip = form.querySelector("#destination-zip").value;
+  data.weight = form.querySelector("#weight").value;
+  data.length = form.querySelector("#length").value || null;
+  data.width = form.querySelector("#width").value || null;
+  data.height = form.querySelector("#height").value || null;
+  tintDays = form.querySelector("#tint").value || 2;
+  percentileVar = form.querySelector("#percentile").value;
+  updateTransitTargetLabel(tintDays);
+  updatePercentileLabel(percentileVar);
+  updateSummary("Loading SmartRate results...");
   data.from_state = getState(data.from_zip);
   data.to_state = getState(data.to_zip);
 
@@ -300,9 +331,20 @@ function getCheapestRateByTransitTime(objects, transitTime) {
   //   document.getElementById("result").innerHTML = "";
   // }
   if (lowestSmartRate) {
-    document.getElementById(lowestSmartRate.id).style.backgroundColor =
-      "lightgreen";
+    document.getElementById(lowestSmartRate.id).classList.add("is-best-rate");
+    updateSummary(
+      `${carrierDisplayNames(lowestSmartRate.carrier)} ${massageServiceName(
+        lowestSmartRate.service,
+      )} is the lowest rate that meets your ${tintDays}-day target at ${formatPercentileLabel(
+        percentileVar,
+      )} confidence.`,
+    );
   } else {
+    updateSummary(
+      `No rates met the ${tintDays}-day target at ${formatPercentileLabel(
+        percentileVar,
+      )} confidence.`,
+    );
     alert("No rate found matching desired criteria.");
   }
 }
@@ -364,32 +406,43 @@ function fetchRates(d) {
           let r = response.data.result;
           r = sortByRate(r);
           let x = document.getElementById("results");
+          let rows = "";
+          let visibleRateCount = 0;
 
           for (i = 0; i < r.length; i++) {
             console.log(r[i]);
             if (r[i].time_in_transit.percentile_95) {
-              x.innerHTML += `<tr id=${r[i].id}><td>${carrierDisplayNames(
+              visibleRateCount += 1;
+              rows += `<tr id=${r[i].id}><td>${carrierDisplayNames(
                 r[i].carrier,
               )}</td><td class="services">${massageServiceName(
                 r[i].service,
-              )}</td><td >${formatter.format(
+              )}</td><td class="numeric">${formatter.format(
                 r[i].rate,
-              )}<td class="percentile_99">${
+              )}<td class="percentile_99 numeric">${
                 r[i].time_in_transit.percentile_99
-              }</td><td class="percentile_97">${
+              }</td><td class="percentile_97 numeric">${
                 r[i].time_in_transit.percentile_97
-              }</td><td class="percentile_95">${
+              }</td><td class="percentile_95 numeric">${
                 r[i].time_in_transit.percentile_95
-              }</td><td class="percentile_85">${
+              }</td><td class="percentile_85 numeric">${
                 r[i].time_in_transit.percentile_85
-              }</td><td class="percentile_75">${
+              }</td><td class="percentile_75 numeric">${
                 r[i].time_in_transit.percentile_75
-              }</td><td class="percentile_50">${
+              }</td><td class="percentile_50 numeric">${
                 r[i].time_in_transit.percentile_50
-              }</td><td>${
+              }</td><td class="numeric">${
                 r[i].delivery_days || r[i].est_delivery_days
               }</td></tr>`;
             }
+          }
+          x.innerHTML = rows;
+          if (visibleRateCount > 0) {
+            updateSummary(
+              `${visibleRateCount} carrier services loaded. Highlighted cells track the active percentile.`,
+            );
+          } else {
+            updateSummary("No SmartRate results were returned for this shipment.");
           }
           getCheapestRateByTransitTime(r, tintDays);
           setTimeout(highlight, 10);
@@ -414,36 +467,44 @@ function highlight() {
   let p50 = document.getElementsByClassName("percentile_50");
 
   for (i = 0; i < temp.length; i++) {
-    p99[i].style.backgroundColor = "white";
-    p97[i].style.backgroundColor = "white";
-    p95[i].style.backgroundColor = "white";
-    p85[i].style.backgroundColor = "white";
-    p75[i].style.backgroundColor = "white";
-    p50[i].style.backgroundColor = "white";
-    temp[i].style.backgroundColor = "lightgreen";
+    p99[i].classList.remove("is-active-cell");
+    p97[i].classList.remove("is-active-cell");
+    p95[i].classList.remove("is-active-cell");
+    p85[i].classList.remove("is-active-cell");
+    p75[i].classList.remove("is-active-cell");
+    p50[i].classList.remove("is-active-cell");
+    temp[i].classList.add("is-active-cell");
   }
   highlightRow();
 }
 
 function highlightRow() {
+  const rows = document.querySelectorAll("#results tr");
+  rows.forEach((row) => row.classList.remove("is-best-rate"));
   let temp = document.getElementById(lowestSmartRate.id);
-  temp = temp.getElementsByTagName("td");
-  for (i = 0; i < temp.length; i++) {
-    temp[i].style.cssText = "background-color: lightgreen";
-    // console.log(temp[i].style.cssText);
+  if (temp) {
+    temp.classList.add("is-best-rate");
   }
 }
 
 function percentileHighlight(e) {
   e.preventDefault();
-  document.getElementById("percentile_99").style.background = "white";
-  document.getElementById("percentile_97").style.background = "white";
-  document.getElementById("percentile_95").style.background = "white";
-  document.getElementById("percentile_85").style.background = "white";
-  document.getElementById("percentile_75").style.background = "white";
-  document.getElementById("percentile_50").style.background = "white";
-  document.getElementById(e.target.value).style.background = "lightgreen";
   percentileVar = e.target.value;
+  updatePercentileLabel(percentileVar);
+  const headers = [
+    "percentile_99",
+    "percentile_97",
+    "percentile_95",
+    "percentile_85",
+    "percentile_75",
+    "percentile_50",
+  ];
+  headers.forEach((id) =>
+    document.getElementById(id).classList.remove("is-active-percentile"),
+  );
+  document
+    .getElementById(e.target.value)
+    .classList.add("is-active-percentile");
   highlight();
 }
 
@@ -480,14 +541,11 @@ function getStatus() {
   axios
     .get(`${serverURL}/status`)
     .then(function (response) {
-      // handle success
-      document.getElementById("status").innerHTML =
-        "<span style='color:green'>Server Online</span>";
+      setStatusState(true);
       console.log(response);
     })
     .catch(function (error) {
-      document.getElementById("status").innerHTML =
-        "<span style='color:red'>Server Offline</span>";
+      setStatusState(false);
       console.log(error);
     })
     .finally(function () {
