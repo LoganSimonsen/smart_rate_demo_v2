@@ -127,6 +127,34 @@ img {
   text-transform: uppercase;
 }
 
+.hero-link,
+.hero-logo-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero-link {
+  border-bottom: 1px solid transparent;
+  transition: border-color 160ms ease;
+}
+
+.hero-link:hover,
+.hero-link:focus-visible {
+  border-color: currentColor;
+}
+
+.hero-logo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-logo-link:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.28);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
 .hero h1,
 .panel-header h2 {
   margin: 0;

@@ -10,13 +10,13 @@ const serverURL =
 let isLoading = false;
 const zonePresets = {
   zone_1: { origin_zip: "90011", destination_zip: "90012" },
-  zone_2: { origin_zip: "90011", destination_zip: "89101" },
-  zone_3: { origin_zip: "90011", destination_zip: "80202" },
-  zone_4: { origin_zip: "90011", destination_zip: "73301" },
-  zone_5: { origin_zip: "90011", destination_zip: "60601" },
-  zone_6: { origin_zip: "90011", destination_zip: "30303" },
-  zone_7: { origin_zip: "90011", destination_zip: "10001" },
-  zone_8: { origin_zip: "90011", destination_zip: "02108" },
+  zone_2: { origin_zip: "90011", destination_zip: "91910" },
+  zone_3: { origin_zip: "90011", destination_zip: "95014" },
+  zone_4: { origin_zip: "90011", destination_zip: "94104" },
+  zone_5: { origin_zip: "90011", destination_zip: "97035" },
+  zone_6: { origin_zip: "90011", destination_zip: "73301" },
+  zone_7: { origin_zip: "90011", destination_zip: "70112" },
+  zone_8: { origin_zip: "90011", destination_zip: "10001" },
 };
 const packagePresets = {
   small_dense: { weight: 80, length: 6, width: 6, height: 6 },
