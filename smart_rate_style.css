@@ -201,6 +201,22 @@ img {
   align-items: start;
 }
 
+.app-disclaimer {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid rgba(20, 33, 61, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 10px 26px rgba(20, 33, 61, 0.06);
+}
+
+.app-disclaimer p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
 .panel {
   border: 1px solid rgba(255, 255, 255, 0.46);
   border-radius: var(--radius-xl);
