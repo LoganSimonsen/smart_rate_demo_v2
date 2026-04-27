@@ -7,6 +7,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 
 const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || "")
   .split(",")
@@ -18,8 +19,12 @@ app.use((req, res, next) => {
     origin(origin, cb) {
       if (!origin) return cb(null, true);
 
-      const requestOrigin = `${req.protocol}://${req.get("host")}`;
-      if (origin === requestOrigin) return cb(null, true);
+      try {
+        const originUrl = new URL(origin);
+        if (originUrl.host === req.get("host")) return cb(null, true);
+      } catch (error) {
+        return cb(new Error(`Invalid origin header: ${origin}`));
+      }
 
       if (
         origin.startsWith("http://localhost:") ||
