@@ -51,6 +51,11 @@ function updatePercentileLabel(key) {
     formatPercentileLabel(key);
 }
 
+function updateUspsZoneLabel(zone) {
+  document.getElementById("usps-zone-label").textContent =
+    zone || zone === 0 ? `Zone ${zone}` : "--";
+}
+
 function setStatusState(isOnline) {
   const status = document.getElementById("status");
   status.classList.toggle("is-online", isOnline);
@@ -292,6 +297,7 @@ function getRates(e) {
   percentileVar = form.querySelector("#percentile").value;
   updateTransitTargetLabel(tintDays);
   updatePercentileLabel(percentileVar);
+  updateUspsZoneLabel(null);
   updateSummary("Loading SmartRate results...");
   data.from_state = getState(data.from_zip);
   data.to_state = getState(data.to_zip);
@@ -400,6 +406,7 @@ function fetchRates(d) {
     .then(function (response) {
       // handle success
       shipmentData = response.data;
+      updateUspsZoneLabel(shipmentData.usps_zone);
       axios
         .get(`${serverURL}/shipments/${shipmentData.id}/smartrate`)
         .then((response) => {
@@ -454,6 +461,7 @@ function fetchRates(d) {
         error.response?.data?.error ||
         error.response?.data?.message ||
         error.message;
+      updateUspsZoneLabel(null);
       updateSummary(`Rate request failed: ${detail}`);
       console.log(error);
     })
