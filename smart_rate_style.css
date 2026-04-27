@@ -1,0 +1,331 @@
+body {
+  background: rgb(6, 229, 174);
+  background: linear-gradient(
+    90deg,
+    rgba(6, 229, 174, 0.8855917366946778) 0%,
+    rgba(23, 77, 255, 1) 100%
+  );
+}
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  zoom: 0.5;
+  font-size: 52px;
+  color: white;
+}
+
+.body-wrap {
+  display: flex;
+  /* flex-direction: column; */
+  padding: 10px;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.services {
+  text-transform: capitalize;
+  flex-wrap: nowrap !important;
+}
+/* Form container */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  background-color: #f7f7f7;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Form labels */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+/* .lightgreen {
+  background-color: lightgreen;
+}
+#percentile_97 {
+  background-color: lightgreen;
+} */
+
+#result {
+  display: block;
+  position: fixed;
+  top: 5px;
+}
+
+/* Form input fields */
+input[type="text"],
+input[type="number"] {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+}
+
+input[type="number"] {
+  width: 6rem;
+}
+
+/* Submit button */
+button[type="submit"] {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+
+.highlight {
+  background-color: "green";
+}
+
+table {
+  max-width: 1500px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 50%;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.form {
+  border-collapse: collapse;
+  padding: 0.75rem;
+  max-width: 500px;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+table th,
+table td {
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid #dee2e6;
+}
+
+table th {
+  font-weight: 700;
+}
+
+table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+table tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+
+table .table-dark th,
+table .table-dark td {
+  border-color: #dee2e6;
+}
+
+table .table-dark th {
+  background-color: #212529;
+  color: #fff;
+}
+
+table .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+table .table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+table .thead-light th {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: none;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: "";
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 1500ms infinite linear;
+  -moz-animation: spinner 1500ms infinite linear;
+  -ms-animation: spinner 1500ms infinite linear;
+  -o-animation: spinner 1500ms infinite linear;
+  animation: spinner 1500ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0,
+    rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0,
+    rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0,
+    rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0,
+    rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    zoom: 0.75;
+  }
+  table {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  table {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  body {
+    zoom: 0.65;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  body {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  body {
+    padding-left: 200px;
+    padding-right: 200px;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  body {
+    padding-left: 300px;
+    padding-right: 300px;
+  }
+}

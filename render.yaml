@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: smart-rate-demo-v2
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /status
+    envVars:
+      - key: EP_PRODUCTION_KEY
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
