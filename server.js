@@ -13,21 +13,26 @@ const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || "")
   .map((origin) => origin.trim())
   .filter(Boolean);
 
-app.use(
+app.use((req, res, next) => {
   cors({
     origin(origin, cb) {
       if (!origin) return cb(null, true);
+
+      const requestOrigin = `${req.protocol}://${req.get("host")}`;
+      if (origin === requestOrigin) return cb(null, true);
+
       if (
         origin.startsWith("http://localhost:") ||
         origin.startsWith("http://127.0.0.1:")
       ) {
         return cb(null, true);
       }
+
       if (allowedOrigins.includes(origin)) return cb(null, true);
       return cb(new Error(`CORS blocked for origin: ${origin}`));
     },
-  }),
-);
+  })(req, res, next);
+});
 
 app.use(express.static(__dirname));
 
