@@ -8,6 +8,24 @@ const serverURL =
     ? window.location.origin
     : "http://localhost:8080");
 let isLoading = false;
+const zonePresets = {
+  zone_1: { origin_zip: "90011", destination_zip: "90012" },
+  zone_2: { origin_zip: "90011", destination_zip: "89101" },
+  zone_3: { origin_zip: "90011", destination_zip: "80202" },
+  zone_4: { origin_zip: "90011", destination_zip: "73301" },
+  zone_5: { origin_zip: "90011", destination_zip: "60601" },
+  zone_6: { origin_zip: "90011", destination_zip: "30303" },
+  zone_7: { origin_zip: "90011", destination_zip: "10001" },
+  zone_8: { origin_zip: "90011", destination_zip: "02108" },
+};
+const packagePresets = {
+  small_dense: { weight: 80, length: 6, width: 6, height: 6 },
+  heavy_parcel: { weight: 192, length: 10, width: 8, height: 8 },
+  large_lightweight: { weight: 18, length: 24, width: 18, height: 14 },
+  oversized: { weight: 160, length: 36, width: 24, height: 18 },
+  compact_parcel: { weight: 12, length: 8, width: 6, height: 4 },
+  long_narrow: { weight: 28, length: 30, width: 8, height: 6 },
+};
 
 // var loadingDiv = document.getElementById("loading");
 
@@ -54,6 +72,53 @@ function updatePercentileLabel(key) {
 function updateUspsZoneLabel(zone) {
   document.getElementById("usps-zone-label").textContent =
     zone || zone === 0 ? `Zone ${zone}` : "--";
+}
+
+function updatePresetNote(message) {
+  document.getElementById("preset-note").textContent = message;
+}
+
+function setInputValue(id, value) {
+  const input = document.getElementById(id);
+  if (input) {
+    input.value = value;
+  }
+}
+
+function applyZoneScenario(event) {
+  const presetKey = event.target.value;
+  if (presetKey === "manual") {
+    updatePresetNote("Manual ZIP mode active. Apply a preset, then tweak any values manually if needed.");
+    return;
+  }
+
+  const preset = zonePresets[presetKey];
+  if (!preset) return;
+
+  setInputValue("origin-zip", preset.origin_zip);
+  setInputValue("destination-zip", preset.destination_zip);
+  updatePresetNote(
+    `Applied ${event.target.options[event.target.selectedIndex].text}. ZIP codes are editable after applying the preset.`,
+  );
+}
+
+function applyPackageScenario(event) {
+  const presetKey = event.target.value;
+  if (presetKey === "manual") {
+    updatePresetNote("Manual package mode active. Apply a preset, then tweak any values manually if needed.");
+    return;
+  }
+
+  const preset = packagePresets[presetKey];
+  if (!preset) return;
+
+  setInputValue("weight", preset.weight);
+  setInputValue("length", preset.length);
+  setInputValue("width", preset.width);
+  setInputValue("height", preset.height);
+  updatePresetNote(
+    `Applied ${event.target.options[event.target.selectedIndex].text}. Parcel values are editable after applying the preset.`,
+  );
 }
 
 function setStatusState(isOnline) {

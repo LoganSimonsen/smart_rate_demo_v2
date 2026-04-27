@@ -67,6 +67,48 @@
 
           <form class="shipment-form" method="post" onsubmit="getRates(event)">
             <fieldset class="form-section">
+              <legend>Demo Presets</legend>
+              <div class="field-grid field-grid-two">
+                <label class="field">
+                  <span>USPS zone scenario</span>
+                  <select id="zone-scenario" onchange="applyZoneScenario(event)">
+                    <option value="manual" selected>Manual ZIPs</option>
+                    <option value="zone_1">Zone 1</option>
+                    <option value="zone_2">Zone 2</option>
+                    <option value="zone_3">Zone 3</option>
+                    <option value="zone_4">Zone 4</option>
+                    <option value="zone_5">Zone 5</option>
+                    <option value="zone_6">Zone 6</option>
+                    <option value="zone_7">Zone 7</option>
+                    <option value="zone_8">Zone 8</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Package scenario</span>
+                  <select
+                    id="package-scenario"
+                    onchange="applyPackageScenario(event)"
+                  >
+                    <option value="manual" selected>Manual package</option>
+                    <option value="small_dense">Small dense package</option>
+                    <option value="heavy_parcel">Heavy parcel</option>
+                    <option value="large_lightweight">
+                      Large lightweight package
+                    </option>
+                    <option value="oversized">Oversized package</option>
+                    <option value="compact_parcel">Compact parcel</option>
+                    <option value="long_narrow">Long narrow package</option>
+                  </select>
+                </label>
+              </div>
+              <p id="preset-note" class="preset-note">
+                Apply a preset, then tweak any values manually if needed. USPS
+                zones are carrier-specific and do not map universally across all
+                services.
+              </p>
+            </fieldset>
+
+            <fieldset class="form-section">
               <legend>Route</legend>
               <div class="field-grid field-grid-two">
                 <label class="field">
