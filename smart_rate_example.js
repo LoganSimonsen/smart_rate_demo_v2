@@ -439,6 +439,7 @@ function fetchRates(d) {
     "ca_e774426536d34975993ef2db85f85bfe",
     "ca_aab59ea0669b49bb9af174fdb248a7ee",
     "ca_c10e02b4243d43659d79d03441c0cb72",
+    "ca_6e2034b6c793468bb04ab99f0eba3c73",
   ]; // your list of carrier accounts
   axios
     .post(`${serverURL}/shipments`, {
